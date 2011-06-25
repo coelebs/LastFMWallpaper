@@ -6,7 +6,9 @@
     <string name="username">Username</string>
     <string name="refresh">Automatic refresh</string>
     <string name="username_summary">Your last.FM username</string>
-    <string name="refresh_summary">Automatic refreshing of the background every 24 hours</string>
+    <string name="refresh_summary">Enable automatic refreshing of the background</string>
     <string name="set_now">Set background now</string>
     <string name="set_now_summary">Set your background now to your last listened album\'s art</string>
+    <string name="interval">Interval</string>
+    <string name="interval_summary">Set the time between intervals in hours</string>
 </resources>

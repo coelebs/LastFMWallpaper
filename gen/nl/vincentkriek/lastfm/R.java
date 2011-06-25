@@ -25,6 +25,8 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f050001;
         public static final int hello=0x7f050000;
+        public static final int interval=0x7f050009;
+        public static final int interval_summary=0x7f05000a;
         public static final int ok=0x7f050002;
         public static final int refresh=0x7f050004;
         public static final int refresh_summary=0x7f050006;
