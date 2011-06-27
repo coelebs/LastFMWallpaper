@@ -19,7 +19,7 @@ import android.util.Log;
 
 
 public class LastFM {
-	public static final String TAG = "nl.vincentkriek.lastfm.LastFM";
+	public static final String TAG = "nl.vincentkriek.lastfm";
     public static final String baseURL = "http://ws.audioscrobbler.com/2.0/?format=json&api_key=40887e583290b0d8932e3c872ac7aae5";
 	
 	public static String request(String extra) throws IOException {

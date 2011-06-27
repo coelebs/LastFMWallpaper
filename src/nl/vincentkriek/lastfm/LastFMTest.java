@@ -5,20 +5,22 @@ import java.io.IOException;
 import org.json.JSONException;
 
 import android.app.WallpaperManager;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
-import android.widget.Toast;
 
 public class LastFMTest extends PreferenceActivity {
-    public static final String TAG = "nl.vincentkriek.lastfm.LastFMTest";
+    public static final String TAG = "nl.vincentkriek.lastfm";
 
 	
     @Override
@@ -49,9 +51,8 @@ public class LastFMTest extends PreferenceActivity {
 			Boolean isChecked = (Boolean)newValue;
 			((CheckBoxPreference)preference).setChecked(isChecked);
 			
-			handler.removeCallbacks(setWallpaperTask);
 			if(isChecked) {
-				handler.postDelayed(setWallpaperTask, 100);
+				startService(new Intent(LastFMTest.this, WallpaperService.class));
 			}
 			
 			return false;
@@ -62,10 +63,11 @@ public class LastFMTest extends PreferenceActivity {
     
     private Runnable setWallpaperTask = new Runnable() {
     	   public void run() {
-    	    	EditTextPreference user = (EditTextPreference)findPreference("username");
-    	    	Bitmap background;
+ 	   		   	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		    	String user = pref.getString("username", "");
+		    	Bitmap background;
     	    	try {
-    				background = LastFM.getAlbumArtByUser(user.getText().toString());
+    				background = LastFM.getAlbumArtByUser(user);
     				WallpaperManager.getInstance(getApplicationContext()).setBitmap(background);
     			} catch (JSONException e) {
     				Log.e(TAG, e.getMessage());
