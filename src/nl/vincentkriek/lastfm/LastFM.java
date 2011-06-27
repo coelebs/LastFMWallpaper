@@ -24,7 +24,7 @@ public class LastFM {
 	
 	public static String request(String extra) throws IOException {
 		URL url = new URL(baseURL + extra);
-		URLConnection conn = url.openConnection();
+ 		URLConnection conn = url.openConnection();
 		InputStream is = conn.getInputStream();
 		BufferedInputStream bis = new BufferedInputStream(is);
 		ByteArrayBuffer bab = new ByteArrayBuffer(64);
@@ -41,9 +41,19 @@ public class LastFM {
 	public static JSONObject getRecentTrack(String user) {
 		String json;
 		JSONObject jObject = null;
+		JSONArray recent = null;
 		try {
 			json = request("&method=user.getrecenttracks&user=" + user);
-			jObject = new JSONObject(new String(json)).getJSONObject("recenttracks").getJSONArray("track").getJSONObject(0);
+			recent = new JSONObject(new String(json)).getJSONObject("recenttracks").getJSONArray("track");
+			for(int i = 0; i < recent.length(); i++) {
+				jObject = recent.getJSONObject(i);
+				if((!jObject.getJSONObject("album").getString("#text").equals("") ||
+				   !jObject.getJSONObject("album").getString("mbid").equals("")) &&
+				   (!jObject.getJSONObject("artist").getString("#text").equals("") ||
+				   !jObject.getJSONObject("artist").getString("mbid").equals(""))) {
+					break;
+				}
+			}
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (JSONException e) {

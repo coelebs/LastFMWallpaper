@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+	<EditTextPreference
+		android:key="username"
+		android:title="@string/username"
+		android:summary="@string/username_summary"/>
+	<EditTextPreference 
+		android:key="interval"
+		android:title="@string/interval"
+		android:summary="@string/interval_summary"
+		android:defaultValue="24"
+       	android:digits="0123456789"
+       	android:inputType="phone"  />
+	<CheckBoxPreference
+		android:title="@string/refresh"
+		android:summary="@string/refresh_summary"
+		android:key="refresh"/>
+	<Preference 
+		android:title="@string/set_now"
+		android:summary="@string/set_now_summary"
+		android:key="set_now"/>
+</PreferenceScreen>

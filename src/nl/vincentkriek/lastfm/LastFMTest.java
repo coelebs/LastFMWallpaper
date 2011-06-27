@@ -73,8 +73,9 @@ public class LastFMTest extends PreferenceActivity {
     				Log.e(TAG, e.getMessage());
     			}
     			
-    			EditTextPreference intervalPreference = (EditTextPreference)findPreference("delay");
-    			int interval = Integer.parseInt(intervalPreference.getEditText().toString());
+    			EditTextPreference intervalPreference = (EditTextPreference)findPreference("interval");
+    			String interval_string = intervalPreference.getText();
+    			int interval = Integer.parseInt(interval_string);
     			
     			handler.postDelayed(setWallpaperTask, (interval * 60 * 60) * 1000);
     	   }
