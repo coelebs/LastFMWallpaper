@@ -2,8 +2,6 @@ package nl.vincentkriek.lastfm;
 
 import java.io.IOException;
 
-import org.json.JSONException;
-
 import android.app.ActivityManager;
 import android.app.Service;
 import android.app.WallpaperManager;
@@ -59,7 +57,7 @@ public class WallpaperService extends Service {
     	    	String user = pref.getString("username", "");
     	    	Bitmap background;
     	    	try {
-    				background = LastFM.getAlbumArtByUser(user);
+    				background = LastFM.getArtistArtByUser(user);
     				if(background != null) {
     					Editor edit = pref.edit();
     					
@@ -67,8 +65,6 @@ public class WallpaperService extends Service {
     					edit.commit();
     					WallpaperManager.getInstance(getApplicationContext()).setBitmap(background);
     				}
-    			} catch (JSONException e) {
-    				Log.e(TAG, e.getMessage());
     			} catch (IOException e) {
     				Log.e(TAG, e.getMessage());
     			}

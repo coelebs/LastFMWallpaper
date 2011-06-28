@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, LastFMTest!</string>
-    <string name="app_name">LastFMWallpaper</string>
+    <string name="app_name">LastWallpaper</string>
     <string name="ok">ok</string>
     <string name="username">Username</string>
     <string name="refresh">Automatic refresh</string>
-    <string name="username_summary">Your last.FM username</string>
+    <string name="username_summary">Your Last.FM username</string>
     <string name="refresh_summary">Enable automatic refreshing of the background</string>
     <string name="set_now">Set background now</string>
     <string name="set_now_summary">Set your background now to your last listened album\'s art</string>
