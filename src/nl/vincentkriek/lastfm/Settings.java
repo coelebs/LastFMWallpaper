@@ -1,23 +1,15 @@
 package nl.vincentkriek.lastfm;
 
-import java.io.IOException;
-
-import org.json.JSONException;
-
-import android.app.WallpaperManager;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.CheckBoxPreference;
-import android.preference.EditTextPreference;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
-import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.util.Log;
+import android.preference.PreferenceActivity;
 
 public class Settings extends PreferenceActivity {
     public static final String TAG = "nl.vincentkriek.lastfm";
@@ -25,7 +17,7 @@ public class Settings extends PreferenceActivity {
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    	super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settings);
 		
 		Preference setNow = findPreference("set_now");
@@ -35,10 +27,21 @@ public class Settings extends PreferenceActivity {
 		enableTimer.setOnPreferenceChangeListener(enableTimerListener);
     }
     
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	
+		CheckBoxPreference refresh = (CheckBoxPreference)findPreference("refresh");
+		refresh.setChecked(WallpaperService.isServiceRunning(getApplicationContext()));
+    }
+    
     private OnPreferenceClickListener setNowListener = new OnPreferenceClickListener() {
 
 		public boolean onPreferenceClick(Preference preference) {
-			setWallpaperTask.run();
+			Intent intent = new Intent(Settings.this, WallpaperService.class);
+			intent.putExtra("setnow", true);
+			startService(intent);
+			
 			return true;
 		}
 
@@ -59,29 +62,7 @@ public class Settings extends PreferenceActivity {
 			return false;
 		}
 	};
+	
+
     
-    private Handler handler = new Handler();
-    
-    private Runnable setWallpaperTask = new Runnable() {
-    	   public void run() {
- 	   		   	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		    	String user = pref.getString("username", "");
-		    	Bitmap background;
-    	    	try {
-    				background = LastFM.getAlbumArtByUser(user);
-    				WallpaperManager.getInstance(getApplicationContext()).setBitmap(background);
-    			} catch (JSONException e) {
-    				Log.e(TAG, e.getMessage());
-    			} catch (IOException e) {
-    				Log.e(TAG, e.getMessage());
-    			}
-    			
-    			EditTextPreference intervalPreference = (EditTextPreference)findPreference("interval");
-    			String interval_string = intervalPreference.getText();
-    			int interval = Integer.parseInt(interval_string);
-    			
-    			handler.postDelayed(setWallpaperTask, (interval * 60 * 60) * 1000);
-    	   }
-    	};
-  
 }

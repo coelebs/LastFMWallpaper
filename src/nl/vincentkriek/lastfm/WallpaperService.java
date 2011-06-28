@@ -4,10 +4,14 @@ import java.io.IOException;
 
 import org.json.JSONException;
 
+import android.app.ActivityManager;
 import android.app.Service;
 import android.app.WallpaperManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.IBinder;
@@ -33,7 +37,11 @@ public class WallpaperService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
-		startWallpaperTask();
+		if(intent.hasExtra("setnow")) {
+			setWallpaperTask.run();
+		} else {
+			startWallpaperTask();
+		}
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -45,7 +53,7 @@ public class WallpaperService extends Service {
 	
     private Handler handler = new Handler();
     
-    private Runnable setWallpaperTask = new Runnable() {
+    public Runnable setWallpaperTask = new Runnable() {
     	   public void run() {
     		   	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     	    	String user = pref.getString("username", "");
@@ -53,7 +61,10 @@ public class WallpaperService extends Service {
     	    	try {
     				background = LastFM.getAlbumArtByUser(user);
     				if(background != null) {
-    					pref.edit().putBoolean("setwallpaper", true);
+    					Editor edit = pref.edit();
+    					
+    					edit.putBoolean("wallpaperchanged", true);
+    					edit.commit();
     					WallpaperManager.getInstance(getApplicationContext()).setBitmap(background);
     				}
     			} catch (JSONException e) {
@@ -67,4 +78,16 @@ public class WallpaperService extends Service {
     			handler.postDelayed(setWallpaperTask, (interval * 60 * 60) * 1000);
     	   }
     	};
+    	
+	public static boolean isServiceRunning(Context context) {
+	    ActivityManager manager = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+	    String servicename = WallpaperService.class.getName();
+	    
+	    for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+	        if (servicename.equals(service.service.getClassName())) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 }
