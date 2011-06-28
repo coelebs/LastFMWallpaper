@@ -19,7 +19,7 @@ import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
 
-public class LastFMTest extends PreferenceActivity {
+public class Settings extends PreferenceActivity {
     public static final String TAG = "nl.vincentkriek.lastfm";
 
 	
@@ -50,9 +50,10 @@ public class LastFMTest extends PreferenceActivity {
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			Boolean isChecked = (Boolean)newValue;
 			((CheckBoxPreference)preference).setChecked(isChecked);
-			
 			if(isChecked) {
-				startService(new Intent(LastFMTest.this, WallpaperService.class));
+				startService(new Intent(Settings.this, WallpaperService.class));
+			} else {
+				stopService(new Intent(Settings.this, WallpaperService.class));
 			}
 			
 			return false;
