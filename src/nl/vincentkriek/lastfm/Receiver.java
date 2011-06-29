@@ -14,7 +14,7 @@ public class Receiver extends BroadcastReceiver {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 		Editor edit = pref.edit();
 		if(!pref.getBoolean("wallpaperchanged", false)) {
-			context.stopService(new Intent(context, WallpaperService.class));
+			WallpaperService.stop(context);
 		}
 		
 		edit.putBoolean("wallpaperchanged", false);

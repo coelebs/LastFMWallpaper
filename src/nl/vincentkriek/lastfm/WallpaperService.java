@@ -24,21 +24,22 @@ public class WallpaperService extends Service {
 		return null;
 	}
 	
-	public void onCreate() {
-		super.onCreate();
-	}
-	
-	public void onDestroy() {
-		super.onDestroy();
-	}
-	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
 		if(intent.hasExtra("setnow")) {
 			setWallpaperTask.run();
+		} else if(intent.hasExtra("startdaemon")) {
+			Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+			editor.putBoolean("refresh", true);
+			editor.commit();
+			
+			startWallpaperTask();	
 		} else {
-			startWallpaperTask();
+			if(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean("refresh", false))
+				startWallpaperTask();
+			else
+				stopSelf();
 		}
 
 		return super.onStartCommand(intent, flags, startId);
@@ -55,6 +56,10 @@ public class WallpaperService extends Service {
     	   public void run() {
     		   	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     	    	String user = pref.getString("username", "");
+    	    	if(user.length() <= 0) {
+    	    		return;
+    	    	}
+    	    	
     	    	Bitmap background;
     	    	try {
     	    		String catagorie = pref.getString("catagorie", "album");
@@ -91,5 +96,13 @@ public class WallpaperService extends Service {
 	        }
 	    }
 	    return false;
+	}
+	
+	public static void stop(Context context) {
+		Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+		editor.putBoolean("refresh", false);
+		editor.commit();
+		
+		context.stopService(new Intent(context, WallpaperService.class));
 	}
 }

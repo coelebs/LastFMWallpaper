@@ -46,7 +46,6 @@ public class Settings extends PreferenceActivity {
 	
 	private OnPreferenceChangeListener enableTimerListener = new OnPreferenceChangeListener() {
 		
-		@Override
 		public boolean onPreferenceChange(Preference preference, Object newValue) {
 			Boolean isChecked = (Boolean)newValue;
 			((CheckBoxPreference)preference).setChecked(isChecked);
