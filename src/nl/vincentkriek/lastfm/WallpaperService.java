@@ -57,7 +57,13 @@ public class WallpaperService extends Service {
     	    	String user = pref.getString("username", "");
     	    	Bitmap background;
     	    	try {
-    				background = LastFM.getArtistArtByUser(user);
+    	    		String catagorie = pref.getString("catagorie", "album");
+    	    		if(catagorie.equals("album")) {
+    	    			background = LastFM.getAlbumArtByUser(user);
+    	    		} else {
+    	    			background = LastFM.getArtistArtByUser(user);
+    	    		}
+    	    		
     				if(background != null) {
     					Editor edit = pref.edit();
     					

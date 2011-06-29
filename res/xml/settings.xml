@@ -11,7 +11,14 @@
 		android:summary="@string/interval_summary"
 		android:defaultValue="24"
        	android:digits="0123456789"
-       	android:inputType="phone"  />
+       	android:inputType="phone"  />                
+  	<ListPreference
+        android:title="@string/catagorie"
+        android:summary="@string/catagorie_summary"
+        android:key="catagorie"
+        android:entries="@array/catagories"
+        android:entryValues="@array/catagories_entry"
+        android:defaultValue="album" />
 	<CheckBoxPreference
 		android:title="@string/refresh"
 		android:summary="@string/refresh_summary"

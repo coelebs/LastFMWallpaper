@@ -11,4 +11,14 @@
     <string name="set_now_summary">Set your background now to your last listened album\'s art</string>
     <string name="interval">Interval</string>
     <string name="interval_summary">Set the time between intervals in hours</string>
+    <string name="catagorie">Catagorie</string>
+    <string name="catagorie_summary">The type of image to fetch from Last.FM</string>
+    <string-array name="catagories">
+        <item>Artist Image</item>
+        <item>Album Art</item>
+    </string-array>
+    <string-array name="catagories_entry">
+        <item>artist</item>
+        <item>album</item>
+    </string-array>
 </resources>
